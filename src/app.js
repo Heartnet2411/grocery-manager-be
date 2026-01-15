@@ -1,20 +1,18 @@
-const express = require("express");
-const cors = require("cors");
-
-const productRoutes = require("./routes/product.route");
+import express from "express";
+import cors from "cors";
+import productRoutes from "./routes/product.route.js";
+import morgan from "morgan";
 
 const app = express();
 
-// Middlewares
 app.use(cors());
+app.use(morgan("dev"));
 app.use(express.json());
 
-// Routes
 app.use("/api/products", productRoutes);
 
-// Test
 app.get("/", (req, res) => {
-  res.send("Grocery Backend API running");
+  res.send("Grocery Manager API running");
 });
 
-module.exports = app;
+export default app;
