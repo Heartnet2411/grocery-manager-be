@@ -1,22 +1,48 @@
-import prisma from "../prisma.js";
+import { prisma } from "../prismaClient.js";
 
-export const getProducts = async (req, res) => {
+exports.createProduct = async (req, res) => {
+  const { productId, name, price, productImage, stockQuantity } = req.body;
+
   try {
-    const products = await prisma.product.findMany({
-      orderBy: {
-        id: "desc",
+    const product = await prisma.product.create({
+      data: {
+        productId,
+        name,
+        price,
+        productImage,
+        stockQuantity,
       },
     });
-
-    res.status(200).json({
-      success: true,
-      data: products,
-    });
-  } catch (error) {
-    console.error("Get products error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch products",
-    });
+    res.json(product);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
+};
+
+exports.getProducts = async (req, res) => {
+  const products = await prisma.product.findMany({
+    where: { isActive: true },
+  });
+  res.json(products);
+};
+
+exports.updateStock = async (req, res) => {
+  const { id } = req.params;
+  const { stockQuantity } = req.body;
+
+  const product = await prisma.product.update({
+    where: { id: Number(id) },
+    data: { stockQuantity },
+  });
+
+  res.json(product);
+};
+
+exports.deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  await prisma.product.update({
+    where: { id: Number(id) },
+    data: { isActive: false },
+  });
+  res.json({ message: "Sản phẩm đã được xóa thành công" });
 };

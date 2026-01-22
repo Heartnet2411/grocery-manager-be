@@ -1,9 +1,11 @@
-import express from "express";
-import { getProducts } from "../controllers/product.controller.js";
+import { Router } from "express";
+import * as controller from "../controllers/product.controller.js";
 
-const router = express.Router();
+const router = Router();
 
-// GET /api/products
-router.get("/", getProducts);
+router.post("/", controller.createProduct);
+router.get("/", controller.getProducts);
+router.patch("/:id/stock", controller.updateStock);
+router.delete("/:id", controller.deleteProduct);
 
-export default router;
+module.exports = router;

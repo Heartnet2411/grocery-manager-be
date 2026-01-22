@@ -7,9 +7,84 @@ datasource db {
   url      = "file:./grocery.db"
 }
 
+////////////////////////////////////////////////
+// PRODUCT
+////////////////////////////////////////////////
 model Product {
-  id    Int    @id @default(autoincrement())
-  name  String
-  price Int
-  stock Int
+  id            Int      @id @default(autoincrement())
+  productId     String
+  name          String
+  price         Float
+  productImage  String
+  stockQuantity Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  saleItems     SaleItem[]
 }
+
+////////////////////////////////////////////////
+// CUSTOMER (chỉ dùng khi bán thiếu)
+////////////////////////////////////////////////
+model Customer {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String?
+  note      String?
+  createdAt DateTime @default(now())
+
+  sales     Sale[]
+}
+
+////////////////////////////////////////////////
+// SALE (HÓA ĐƠN)
+////////////////////////////////////////////////
+model Sale {
+  id            Int      @id @default(autoincrement())
+  saleDate      DateTime @default(now())
+
+  totalAmount   Float
+  paidAmount    Float    @default(0)
+  debtAmount    Float    @default(0)
+
+  status        String @default("UNPAID")
+  paymentMethod String?   // cash, transfer
+
+  customerId    Int?
+  customer      Customer? @relation(fields: [customerId], references: [id])
+
+  createdAt     DateTime @default(now())
+
+  items         SaleItem[]
+  payments      Payment[]
+}
+
+////////////////////////////////////////////////
+// SALE ITEM
+////////////////////////////////////////////////
+model SaleItem {
+  id         Int     @id @default(autoincrement())
+  saleId    Int
+  productId Int
+  quantity  Int
+  unitPrice Float
+  total     Float
+
+  sale       Sale    @relation(fields: [saleId], references: [id])
+  product    Product @relation(fields: [productId], references: [id])
+}
+
+////////////////////////////////////////////////
+// PAYMENT (TRẢ NỢ)
+////////////////////////////////////////////////
+model Payment {
+  id        Int      @id @default(autoincrement())
+  saleId    Int
+  amount    Float
+  method    String?  // cash, transfer
+  paidAt    DateTime @default(now())
+  note      String?
+
+  sale      Sale     @relation(fields: [saleId], references: [id])
+}
+
