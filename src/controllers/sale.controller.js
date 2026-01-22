@@ -1,6 +1,6 @@
-import { prisma } from "../prismaClient.js";
+import prisma from "../prisma.js";
 
-exports.createSale = async (req, res) => {
+export const createSale = async (req, res) => {
   const { items, paidAmount, paymentMethod, customerId } = req.body;
 
   try {
@@ -50,7 +50,7 @@ exports.createSale = async (req, res) => {
   }
 };
 
-exports.getSales = async (req, res) => {
+export const getSales = async (req, res) => {
   const sales = await prisma.sale.findMany({
     include: {
       customer: true,
@@ -61,7 +61,7 @@ exports.getSales = async (req, res) => {
   res.json(sales);
 };
 
-exports.getDebts = async (req, res) => {
+export const getDebts = async (req, res) => {
   const sales = await prisma.sale.findMany({
     where: { status: { not: "PAID" } },
     include: { customer: true },

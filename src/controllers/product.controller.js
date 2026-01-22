@@ -1,6 +1,6 @@
-import { prisma } from "../prismaClient.js";
+import prisma from "../prisma.js";
 
-exports.createProduct = async (req, res) => {
+export const createProduct = async (req, res) => {
   const { productId, name, price, productImage, stockQuantity } = req.body;
 
   try {
@@ -19,14 +19,14 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-exports.getProducts = async (req, res) => {
+export const getProducts = async (req, res) => {
   const products = await prisma.product.findMany({
     where: { isActive: true },
   });
   res.json(products);
 };
 
-exports.updateStock = async (req, res) => {
+export const updateStock = async (req, res) => {
   const { id } = req.params;
   const { stockQuantity } = req.body;
 
@@ -38,7 +38,7 @@ exports.updateStock = async (req, res) => {
   res.json(product);
 };
 
-exports.deleteProduct = async (req, res) => {
+export const deleteProduct = async (req, res) => {
   const { id } = req.params;
   await prisma.product.update({
     where: { id: Number(id) },

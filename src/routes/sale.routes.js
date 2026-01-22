@@ -7,4 +7,4 @@ router.post("/", controller.createSale);
 router.get("/", controller.getSales);
 router.get("/debts", controller.getDebts);
 
-module.exports = router;
+export default router;

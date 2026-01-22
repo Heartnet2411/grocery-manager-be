@@ -4,4 +4,4 @@ const router = Router();
 
 router.post("/", controller.payDebt);
 
-module.exports = router;
+export default router;

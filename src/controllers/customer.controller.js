@@ -1,6 +1,6 @@
-import { prisma } from "../prismaClient.js";
+import prisma from "../prisma.js";
 
-exports.createCustomer = async (req, res) => {
+export const createCustomer = async (req, res) => {
   const { name, phone, note } = req.body;
 
   const customer = await prisma.customer.create({
@@ -10,7 +10,7 @@ exports.createCustomer = async (req, res) => {
   res.json(customer);
 };
 
-exports.getCustomers = async (req, res) => {
+export const getCustomers = async (req, res) => {
   const customers = await prisma.customer.findMany();
   res.json(customers);
 };

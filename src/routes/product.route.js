@@ -8,4 +8,4 @@ router.get("/", controller.getProducts);
 router.patch("/:id/stock", controller.updateStock);
 router.delete("/:id", controller.deleteProduct);
 
-module.exports = router;
+export default router;

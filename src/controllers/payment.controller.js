@@ -1,6 +1,6 @@
-import { prisma } from "../prismaClient.js";
+import prisma from "../prisma.js";
 
-exports.payDebt = async (req, res) => {
+export const payDebt = async (req, res) => {
   const { saleId, amount, method, note } = req.body;
 
   const sale = await prisma.sale.findUnique({

@@ -6,4 +6,4 @@ const router = Router();
 router.post("/", controller.createCustomer);
 router.get("/", controller.getCustomers);
 
-module.exports = router;
+export default router;
